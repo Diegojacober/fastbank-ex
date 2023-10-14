@@ -14,7 +14,7 @@ class UserAdmin(BaseUserAdmin):
     list_display = ['id', 'first_name', 'last_name', 'cpf']
     fieldsets = (
         (None, {'fields': ('email', 'password',)}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'cpf', )}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'cpf', 'url_image',)}),
         (
             _('Permissions'),
             {
@@ -37,6 +37,7 @@ class UserAdmin(BaseUserAdmin):
                 'last_name',
                 'cpf',
                 'email',
+                'url_image',
                 'password1',
                 'password2',
                 'is_active',
