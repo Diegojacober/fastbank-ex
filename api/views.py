@@ -9,6 +9,8 @@ from core.models import Conta
 from api import serializers
 import random, decimal
 
+from rest_framework.decorators import action
+
 
 class AccountViewSet(viewsets.ModelViewSet):
     # "SELECT * FROM contas";
@@ -49,3 +51,28 @@ class AccountViewSet(viewsets.ModelViewSet):
             conta.save()
 
             return Response({'message': 'Created'}, status=status.HTTP_201_CREATED)
+
+    @action(methods=['POST'], detail=True, url_path='sacar')
+    def sacar(self, request, pk=None):
+        conta = Conta.objects.filter(id=pk).first()
+        
+        serializer_recebido = serializers.SaqueSerializer(request=request.data)
+        
+        if serializer_recebido.is_valid() and conta:
+            valor_saque = decimal.Decimal(serializer_recebido.validated_data.get('value'))
+            saldo = decimal.Decimal(conta.saldo)
+            
+            comparacao = saldo.compare(valor_saque)
+            
+            if comparacao == 0 or comparacao == 1:
+                novo_valor = 0 if saldo - valor_saque <= 0 else  saldo - valor_saque
+                
+                conta.saldo = novo_valor
+                
+                conta.save()
+                
+                return Response({"saldo": conta.saldo}, status=status.HTTP_200_OK)
+            
+            return Response({'message': 'Saldo insuficiente'}, status=status.HTTP_403_FORBIDDEN)
+        
+        return Response(serializer_recebido.errors, status=status.HTTP_400_BAD_REQUEST)
