@@ -76,3 +76,20 @@ class AccountViewSet(viewsets.ModelViewSet):
             return Response({'message': 'Saldo insuficiente'}, status=status.HTTP_403_FORBIDDEN)
         
         return Response(serializer_recebido.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    @action(methods=['POST'], detail=True, url_path='depositar')
+    def depositar(self, request, pk=None):
+        conta = Conta.objects.filter(id=pk).first()
+        serializer_recebido = serializers.DepositoSerializer(request=request.data)
+        
+        if serializer_recebido.is_valid() and conta:
+            valor_deposito = decimal.Decimal(serializer_recebido.validated_data.get('value'))
+            saldo = decimal.Decimal(conta.saldo)
+            
+            conta.saldo = saldo + valor_deposito
+            conta.save()
+            
+            return Response({"saldo": conta.saldo}, status=status.HTTP_200_OK)
+        
+        return Response(serializer_recebido.errors, status=status.HTTP_400_BAD_REQUEST)
