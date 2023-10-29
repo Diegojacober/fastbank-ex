@@ -17,4 +17,6 @@
 
 [Commit Aula 07](https://github.com/Diegojacober/fastbank-ex/commit/466d634125f2a1cd35fad1bf022316f0ac83142b)
 
-[Commit Aula 07](https://github.com/Diegojacober/fastbank-ex/commit/b604efe7052c168b9324a4e97ab48730b7fce0ea)
+[Commit Aula 08](https://github.com/Diegojacober/fastbank-ex/commit/b604efe7052c168b9324a4e97ab48730b7fce0ea)
+
+[Commit Aula 09](https://github.com/Diegojacober/fastbank-ex/commit/5a2a62fe4cef8292d4da888e7686202e44694e4e)

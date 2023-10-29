@@ -23,13 +23,14 @@ def user_image_field(instance, filename):
 
 class Conta(models.Model):
     """Conta para cada um dos cliente(usuários)"""
-    agencia = models.CharField(max_length=4, unique=True)
+    agencia = models.CharField(max_length=4)
     numero = models.CharField(max_length=8)
     saldo = models.DecimalField(max_digits=5, decimal_places=2)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING
     )
+    created_at = models.DateTimeField(default=timezone.now)
 
 
 class UserManager(BaseUserManager):
