@@ -31,6 +31,9 @@ class Conta(models.Model):
         on_delete=models.DO_NOTHING
     )
     created_at = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self) -> str:
+        return f'{self.agenca} - {self.numero}'
 
 
 class UserManager(BaseUserManager):
