@@ -51,12 +51,14 @@ class AccountViewSet(viewsets.ModelViewSet):
             conta.save()
 
             return Response({'message': 'Created'}, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['POST'], detail=True, url_path='sacar')
     def sacar(self, request, pk=None):
         conta = Conta.objects.filter(id=pk).first()
         
-        serializer_recebido = serializers.SaqueSerializer(request=request.data)
+        serializer_recebido = serializers.SaqueSerializer(data=request.data)
         
         if serializer_recebido.is_valid() and conta:
             valor_saque = decimal.Decimal(serializer_recebido.validated_data.get('value'))
@@ -81,7 +83,7 @@ class AccountViewSet(viewsets.ModelViewSet):
     @action(methods=['POST'], detail=True, url_path='depositar')
     def depositar(self, request, pk=None):
         conta = Conta.objects.filter(id=pk).first()
-        serializer_recebido = serializers.DepositoSerializer(request=request.data)
+        serializer_recebido = serializers.DepositoSerializer(data=request.data)
         
         if serializer_recebido.is_valid() and conta:
             valor_deposito = decimal.Decimal(serializer_recebido.validated_data.get('value'))
